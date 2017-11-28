@@ -104,4 +104,16 @@ public class LeaveApprovalServiceImpl implements LeaveApprovalService {
 		//再完成任务
 		taskService.complete(taskId);  
 	}
+
+	/**
+	 *  @author Administrator
+	 */
+	@Override
+	public void rejectApproval(String userName, String procId) throws Exception {
+		// TODO Auto-generated method stub
+		ProcessEngine processEngine = ProcessEngineConfiguration  
+                .createProcessEngineConfigurationFromResource("activiti.cfg.xml")  
+                .buildProcessEngine();  
+		processEngine.getRuntimeService().deleteProcessInstance(procId, userName);
+	}
 }

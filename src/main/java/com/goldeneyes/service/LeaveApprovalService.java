@@ -43,6 +43,14 @@ public interface LeaveApprovalService {
 	 * @param taskId
 	 * @throws Exception
 	 */
-	public void completeTask(String userName,String taskId) throws Exception;
+	public void completeTask(String userName, String taskId) throws Exception;
+	/**
+	 * 驳回申请
+	 * @param userName
+	 * @param procId
+	 * @return
+	 * @throws Exception
+	 */
+	public void rejectApproval(String userName, String procId) throws Exception;
 
 }
