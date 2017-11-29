@@ -49,20 +49,40 @@ public class LeaveApprovalController {
 	 */
 	@RequestMapping("/launchApplication")
 	public void launchApplication(HttpServletRequest request, HttpServletResponse response, Model model) {
+		// 接收参数用
+		JSONObject jsonInput = new JSONObject();
 		// 返回参数用
 		JSONObject jsonData = new JSONObject();
 
-		String procId = "";
-		try {
-			procId = leaveApprovalService.launchApplication();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			CommonTool.outJsonString(response, CommonTool.outJson(jsonData, "1014").toString());
+		if (!jsonInput.has("day")) {
+			CommonTool.outJsonString(response, CommonTool.outJson(jsonData, "1004").toString());
 			return;
+
+		} else {
+			int day = 0;
+			try {
+				/*
+				 * 从jsonInput取对应各个键的值
+				 */
+				day = Integer.parseInt(jsonInput.getString("day"));
+			} catch (Exception e) {
+				// TODO: handle exception
+				CommonTool.outJsonString(response, CommonTool.outJson(jsonData, "1003").toString());
+				return;
+
+			}
+			String procId = "";
+			try {
+				procId = leaveApprovalService.launchApplication(day);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				CommonTool.outJsonString(response, CommonTool.outJson(jsonData, "1014").toString());
+				return;
+			}
+			jsonData.put("procId", procId);
+			// 在这里输出，手机端就能拿到请求返回的值了
+			CommonTool.outJsonString(response, CommonTool.outJson(jsonData, "0000").toString());
 		}
-		jsonData.put("procId", procId);
-		// 在这里输出，手机端就能拿到请求返回的值了
-		CommonTool.outJsonString(response, CommonTool.outJson(jsonData, "0000").toString());
 	}
 	
 	/**

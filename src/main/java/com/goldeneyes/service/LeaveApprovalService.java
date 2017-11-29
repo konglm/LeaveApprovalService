@@ -28,7 +28,7 @@ public interface LeaveApprovalService {
 	 * @return
 	 * @throws Exception
 	 */
-	public String launchApplication() throws Exception;
+	public String launchApplication(int day) throws Exception;
 	/**
 	 * 获取任务列表
 	 * @param userName

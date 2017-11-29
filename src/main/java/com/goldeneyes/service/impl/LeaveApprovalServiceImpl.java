@@ -40,13 +40,14 @@ public class LeaveApprovalServiceImpl implements LeaveApprovalService {
 	 *  @author Administrator
 	 */
 	@Override
-	public String launchApplication() throws Exception {
+	public String launchApplication(int day) throws Exception {
 		// TODO Auto-generated method stub
 		ProcessEngine processEngine = ProcessEngineConfiguration  
 	                .createProcessEngineConfigurationFromResource("activiti.cfg.xml")  
 	                .buildProcessEngine();  
 		ProcessInstance instance = processEngine  
                  .getRuntimeService().startProcessInstanceByKey("LeaveApproval");  
+		processEngine.getRuntimeService().setVariable(instance.getId(), "day", day); 
         String procId = instance.getId();  
 		return procId;
 	}
