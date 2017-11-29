@@ -52,5 +52,18 @@ public interface LeaveApprovalService {
 	 * @throws Exception
 	 */
 	public void rejectApproval(String userName, String procId) throws Exception;
+	/**
+	 * 新增用户
+	 * @param userName
+	 * @param groupId
+	 * @throws Exception
+	 */
+	public void addUser(String userName,int groupId) throws Exception;
+	/**
+	 * 删除用户
+	 * @param userName
+	 * @throws Exception
+	 */
+	public void delUser(String userName) throws Exception;
 
 }

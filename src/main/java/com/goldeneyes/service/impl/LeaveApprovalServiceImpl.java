@@ -22,6 +22,7 @@ import org.activiti.engine.ProcessEngine;
 import org.activiti.engine.ProcessEngineConfiguration;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.history.HistoricTaskInstance;
+import org.activiti.engine.identity.User;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
 import org.springframework.stereotype.Service;
@@ -116,5 +117,42 @@ public class LeaveApprovalServiceImpl implements LeaveApprovalService {
                 .createProcessEngineConfigurationFromResource("activiti.cfg.xml")  
                 .buildProcessEngine();  
 		processEngine.getRuntimeService().deleteProcessInstance(procId, userName);
+	}
+
+	/**
+	 *  @author Administrator
+	 */
+	@Override
+	public void addUser(String userName, int groupId) throws Exception {
+		// TODO Auto-generated method stub
+		ProcessEngine processEngine = ProcessEngineConfiguration  
+                .createProcessEngineConfigurationFromResource("activiti.cfg.xml")  
+                .buildProcessEngine();  
+		//新增用户
+		User user = processEngine.getIdentityService().newUser(userName);
+		user.setFirstName(userName);
+		user.setLastName(userName);
+		user.setPassword(userName);
+		processEngine.getIdentityService().saveUser(user);
+		//将用户添加到组
+		String groupStr = "";
+		if(groupId == 1){
+			groupStr = "management";
+		} else {
+			groupStr = "engineering";
+		}
+		processEngine.getIdentityService().createMembership(userName, groupStr);
+	}
+
+	/**
+	 *  @author Administrator
+	 */
+	@Override
+	public void delUser(String userName) throws Exception {
+		// TODO Auto-generated method stub
+		ProcessEngine processEngine = ProcessEngineConfiguration  
+                .createProcessEngineConfigurationFromResource("activiti.cfg.xml")  
+                .buildProcessEngine();  
+		processEngine.getIdentityService().deleteUser(userName);
 	}
 }

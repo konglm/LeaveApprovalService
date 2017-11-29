@@ -53,7 +53,16 @@ public class LeaveApprovalController {
 		JSONObject jsonInput = new JSONObject();
 		// 返回参数用
 		JSONObject jsonData = new JSONObject();
+		// 接收app端发送来的json请求
+		String requestStr = "";
+		try {
 
+			requestStr = (String) request.getAttribute("requestStr");// 从键requestStr中得到请求的字符串的值
+			jsonInput = JSONObject.fromObject(requestStr);// 将String类型的变量requestStr转换成json对象
+		} catch (Exception e) {
+			CommonTool.outJsonString(response, CommonTool.outJson(jsonData, "1004").toString());
+			return;
+		}
 		if (!jsonInput.has("day")) {
 			CommonTool.outJsonString(response, CommonTool.outJson(jsonData, "1004").toString());
 			return;
@@ -69,7 +78,6 @@ public class LeaveApprovalController {
 				// TODO: handle exception
 				CommonTool.outJsonString(response, CommonTool.outJson(jsonData, "1003").toString());
 				return;
-
 			}
 			String procId = "";
 			try {
@@ -247,6 +255,113 @@ public class LeaveApprovalController {
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				CommonTool.outJsonString(response, CommonTool.outJson(jsonData, "1017").toString());
+				return;
+			}
+			jsonData.put("success", success);
+			// 在这里输出，手机端就能拿到请求返回的值了
+			CommonTool.outJsonString(response, CommonTool.outJson(jsonData, "0000").toString());
+		}
+	}
+	
+	/**
+	 * 新增用户
+	 * @param request
+	 * @param response
+	 * @param model
+	 */
+	@RequestMapping("/addUser")
+	public void addUser(HttpServletRequest request, HttpServletResponse response, Model model) {
+		// 接收参数用
+		JSONObject jsonInput = new JSONObject();
+		// 返回参数用
+		JSONObject jsonData = new JSONObject();
+		// 接收app端发送来的json请求
+		String requestStr = "";
+		try {
+
+			requestStr = (String) request.getAttribute("requestStr");// 从键requestStr中得到请求的字符串的值
+			jsonInput = JSONObject.fromObject(requestStr);// 将String类型的变量requestStr转换成json对象
+		} catch (Exception e) {
+			CommonTool.outJsonString(response, CommonTool.outJson(jsonData, "1004").toString());
+			return;
+		}
+		if (!jsonInput.has("userName") || !jsonInput.has("groupId")) {
+			CommonTool.outJsonString(response, CommonTool.outJson(jsonData, "1004").toString());
+			return;
+
+		} else {
+			String userName = "";
+			int groupId = 0;			
+			try {
+				/*
+				 * 从jsonInput取对应各个键的值
+				 */
+				userName = jsonInput.getString("userName");
+				groupId = Integer.parseInt(jsonInput.getString("groupId"));
+			} catch (Exception e) {
+				// TODO: handle exception
+				CommonTool.outJsonString(response, CommonTool.outJson(jsonData, "1003").toString());
+				return;
+			}
+			int success = 0;
+			try {
+				leaveApprovalService.addUser(userName,groupId);
+				success = 1;
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				CommonTool.outJsonString(response, CommonTool.outJson(jsonData, "1014").toString());
+				return;
+			}
+			jsonData.put("success", success);
+			// 在这里输出，手机端就能拿到请求返回的值了
+			CommonTool.outJsonString(response, CommonTool.outJson(jsonData, "0000").toString());
+		}
+	}
+	/**
+	 * 删除用户
+	 * @param request
+	 * @param response
+	 * @param model
+	 */
+	@RequestMapping("/delUser")
+	public void delUser(HttpServletRequest request, HttpServletResponse response, Model model) {
+		// 接收参数用
+		JSONObject jsonInput = new JSONObject();
+		// 返回参数用
+		JSONObject jsonData = new JSONObject();
+		// 接收app端发送来的json请求
+		String requestStr = "";
+		try {
+
+			requestStr = (String) request.getAttribute("requestStr");// 从键requestStr中得到请求的字符串的值
+			jsonInput = JSONObject.fromObject(requestStr);// 将String类型的变量requestStr转换成json对象
+		} catch (Exception e) {
+			CommonTool.outJsonString(response, CommonTool.outJson(jsonData, "1004").toString());
+			return;
+		}
+		if (!jsonInput.has("userName")) {
+			CommonTool.outJsonString(response, CommonTool.outJson(jsonData, "1004").toString());
+			return;
+
+		} else {
+			String userName = "";			
+			try {
+				/*
+				 * 从jsonInput取对应各个键的值
+				 */
+				userName = jsonInput.getString("userName");
+			} catch (Exception e) {
+				// TODO: handle exception
+				CommonTool.outJsonString(response, CommonTool.outJson(jsonData, "1003").toString());
+				return;
+			}
+			int success = 0;
+			try {
+				leaveApprovalService.delUser(userName);
+				success = 1;
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				CommonTool.outJsonString(response, CommonTool.outJson(jsonData, "1014").toString());
 				return;
 			}
 			jsonData.put("success", success);
