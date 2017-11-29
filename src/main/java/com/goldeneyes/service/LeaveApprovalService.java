@@ -41,9 +41,10 @@ public interface LeaveApprovalService {
 	 * 完成任务
 	 * @param userName
 	 * @param taskId
+	 * @return 是否完成此流程
 	 * @throws Exception
 	 */
-	public void completeTask(String userName, String taskId) throws Exception;
+	public int completeTask(String userName, String taskId, String procId) throws Exception;
 	/**
 	 * 驳回申请
 	 * @param userName

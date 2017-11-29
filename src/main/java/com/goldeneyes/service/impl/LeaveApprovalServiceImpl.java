@@ -95,7 +95,7 @@ public class LeaveApprovalServiceImpl implements LeaveApprovalService {
 	 *  @author Administrator
 	 */
 	@Override
-	public void completeTask(String userName, String taskId) throws Exception {
+	public int completeTask(String userName, String taskId, String procId) throws Exception {
 		// TODO Auto-generated method stub
 		ProcessEngine processEngine = ProcessEngineConfiguration  
                 .createProcessEngineConfigurationFromResource("activiti.cfg.xml")  
@@ -105,6 +105,17 @@ public class LeaveApprovalServiceImpl implements LeaveApprovalService {
 		taskService.claim(taskId, userName);  
 		//再完成任务
 		taskService.complete(taskId);  
+		//判断流程是否结束
+		ProcessInstance rpi = processEngine.getRuntimeService()
+                .createProcessInstanceQuery()
+                .processInstanceId(procId)
+                .singleResult();
+		//说明流程实例结束了
+		if(rpi==null){
+			return 1;
+		} else {
+			return 0;
+		}
 	}
 
 	/**

@@ -171,19 +171,21 @@ public class LeaveApprovalController {
 			CommonTool.outJsonString(response, CommonTool.outJson(jsonData, "1004").toString());
 			return;
 		}
-		if (!jsonInput.has("userName") || !jsonInput.has("taskId")) {
+		if (!jsonInput.has("userName") || !jsonInput.has("taskId") || !jsonInput.has("procId")) {
 			CommonTool.outJsonString(response, CommonTool.outJson(jsonData, "1004").toString());
 			return;
 
 		} else {
 			String userName = "";
 			String taskId = "";
+			String procId = "";
 			try {
 				/*
 				 * 从jsonInput取对应各个键的值
 				 */
 				userName = jsonInput.getString("userName");
 				taskId = jsonInput.getString("taskId");
+				procId = jsonInput.getString("procId");
 			} catch (Exception e) {
 				// TODO: handle exception
 				CommonTool.outJsonString(response, CommonTool.outJson(jsonData, "1003").toString());
@@ -191,16 +193,15 @@ public class LeaveApprovalController {
 
 			}
 			
-			int success = 0;
+			int isComplete = 0;
 			try {
-				leaveApprovalService.completeTask(userName, taskId);
-				success = 1;
+				isComplete = leaveApprovalService.completeTask(userName, taskId, procId);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				CommonTool.outJsonString(response, CommonTool.outJson(jsonData, "1016").toString());
 				return;
 			}
-			jsonData.put("success", success);
+			jsonData.put("isComplete", isComplete);
 			// 在这里输出，手机端就能拿到请求返回的值了
 			CommonTool.outJsonString(response, CommonTool.outJson(jsonData, "0000").toString());
 		}
@@ -309,7 +310,7 @@ public class LeaveApprovalController {
 				success = 1;
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
-				CommonTool.outJsonString(response, CommonTool.outJson(jsonData, "1014").toString());
+				CommonTool.outJsonString(response, CommonTool.outJson(jsonData, "1018").toString());
 				return;
 			}
 			jsonData.put("success", success);
@@ -361,7 +362,7 @@ public class LeaveApprovalController {
 				success = 1;
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
-				CommonTool.outJsonString(response, CommonTool.outJson(jsonData, "1014").toString());
+				CommonTool.outJsonString(response, CommonTool.outJson(jsonData, "1019").toString());
 				return;
 			}
 			jsonData.put("success", success);

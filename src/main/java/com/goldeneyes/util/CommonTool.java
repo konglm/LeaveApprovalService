@@ -212,6 +212,16 @@ public class CommonTool {
 			jsonobj.put("RspTxt", "驳回请求失败");
 			break;
 		}
+		case "1018": {
+			jsonobj.put("RspCode", "1018");
+			jsonobj.put("RspTxt", "新增用户失败");
+			break;
+		}
+		case "1019": {
+			jsonobj.put("RspCode", "1019");
+			jsonobj.put("RspTxt", "删除用户失败");
+			break;
+		}
 		}
 
 		return jsonobj;
